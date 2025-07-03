@@ -220,15 +220,80 @@
     body.phoneMode nav {
       background-color: #111;
       font-size: 14px;
+      position: relative;
     }
 
     body.phoneMode nav a, body.phoneMode #homeBtn {
+      display: none;
       font-size: 14px;
       padding-bottom: 2px;
     }
 
+    /* زرار الهامبرغر - يظهر فقط في الهاتف */
+    #hamburger {
+      display: none;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      user-select: none;
+      z-index: 1010;
+    }
+
+    body.phoneMode #hamburger {
+      display: block;
+    }
+
+    /* عرض homeBtn يكون وسط nav في الهاتف */
+    body.phoneMode #homeBtn {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+    }
+
     body.phoneMode nav a:hover, body.phoneMode #homeBtn:hover {
       color: #44aaff;
+    }
+
+    /* القائمة الجانبية المنبثقة */
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      left: -250px; /* مخفية خارج الشاشة */
+      width: 250px;
+      height: 100vh;
+      background-color: #222;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.7);
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 1050;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #sideMenu a {
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      text-decoration: none;
+      user-select: none;
+      border-bottom: 1px solid #444;
+      transition: background-color 0.3s ease;
+    }
+
+    #sideMenu a:hover {
+      background-color: #3498db;
+    }
+
+    #sideMenu.open {
+      left: 0;
     }
 
     body.phoneMode .hero {
@@ -341,8 +406,8 @@
       font-family: 'Segoe UI', sans-serif;
       resize: vertical;
       box-sizing: border-box;
-      background-color: rgba(255, 255, 255, 0.15); /* شفافية خفيفة */
-      color: #fff; /* نص أبيض واضح */
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #fff;
     }
 
     #commentForm button {
@@ -424,6 +489,7 @@
 <body>
 
   <nav>
+    <div id="hamburger" title="Menu" aria-label="Toggle menu">&#9776;</div>
     <div id="homeBtn" onclick="showHome()" title="Home">🏠</div>
     <a onclick="showSection('about')" id="link-about">About</a>
     <a onclick="showSection('hobbies')" id="link-hobbies">Hobbies</a>
@@ -431,6 +497,15 @@
     <a onclick="showSection('contact')" id="link-contact">Contact</a>
     <a onclick="showSection('comments')" id="link-comments">Comments</a>
   </nav>
+
+  <!-- القائمة الجانبية للهاتف -->
+  <div id="sideMenu" aria-hidden="true">
+    <a onclick="showSection('about'); toggleSideMenu()" id="side-about">About</a>
+    <a onclick="showSection('hobbies'); toggleSideMenu()" id="side-hobbies">Hobbies</a>
+    <a onclick="showSection('goals'); toggleSideMenu()" id="side-goals">Goals</a>
+    <a onclick="showSection('contact'); toggleSideMenu()" id="side-contact">Contact</a>
+    <a onclick="showSection('comments'); toggleSideMenu()" id="side-comments">Comments</a>
+  </div>
 
   <div class="hero" id="hero">
     <h1>Hi, I'm Adam</h1>
@@ -443,297 +518,234 @@
   <div id="about" class="content">
     <div>
       <h2>About Me</h2>
-      <p>Hello! My name is Adam, and I’m currently a high school student deeply passionate about the world of software development. Ever since I started exploring programming languages like Python and HTML, I have been fascinated by how coding can transform ideas into real, functioning projects. I spend a lot of my free time learning new programming concepts and working on small projects to improve my skills. My journey is just beginning, but I am determined to build a strong foundation in development that will support me throughout my future career. Besides programming, I am also curious about technology in general and enjoy discovering the latest trends and innovations. I believe that with hard work and dedication, I can turn my passion into a lifelong career.</p>
+      <p>Hello! My name is Adam, and I’m currently a high school student deeply passionate about the world of software development. Ever since I started exploring programming languages like Python and HTML, I have been fascinated by how coding can transform ideas into real, functioning projects. I spend a lot of my free time learning new programming concepts and working on small projects to improve my skills. My journey is just beginning, but I am determined to build a strong foundation in development that will support me throughout my academic and professional career.</p>
     </div>
   </div>
 
   <div id="hobbies" class="content">
     <div>
-      <h2>My Hobbies</h2>
-      <p>When I’m not coding, I love immersing myself in music, especially Moroccan rap, which inspires me and keeps me motivated. Music is a big part of my life and helps me stay focused and creative. Additionally, I enjoy playing various PC games, which not only provide entertainment but also challenge my strategic thinking and reflexes. Programming and gaming go hand in hand for me as both require problem-solving skills and creativity. I also spend time reading tech blogs and tutorials to stay updated on new tools and programming practices. These hobbies help me balance my academic life and keep my mind sharp and active.</p>
+      <h2>Hobbies</h2>
+      <p>I enjoy reading books, especially in science fiction and fantasy genres, as well as playing video games in my free time. Music also plays a big role in my life—I love discovering new artists and attending concerts whenever possible. Additionally, I’m passionate about sports and staying active, which helps me maintain a balanced lifestyle.</p>
     </div>
   </div>
 
   <div id="goals" class="content">
     <div>
-      <h2>My Goals</h2>
-      <p>My goals are clear and ambitious. I want to excel in my studies and gain as much knowledge as possible about programming and computer science. Ultimately, I aspire to become a skilled programmer, whether by working on professional projects, contributing to open-source software, or even launching my own tech startup someday. I am especially interested in mastering Python and web development technologies, as I see them as powerful tools to create impactful digital solutions. Education is very important to me, and I plan to pursue higher education in computer science or a related field. I believe that dedication, continuous learning, and practical experience will help me achieve these dreams and become a valuable contributor to the tech community.</p>
+      <h2>Goals</h2>
+      <p>My primary goal is to become a skilled software engineer, contributing to innovative projects that make a difference. In the short term, I aim to complete my high school education with excellent grades while continuously improving my programming skills. Long term, I hope to attend a top university specializing in computer science and eventually work at a leading tech company where I can grow professionally and personally.</p>
     </div>
   </div>
 
   <div id="contact" class="content">
     <div>
       <h2>Contact Me</h2>
-      <p>If you want to get in touch, I’m always open to meeting new people and sharing ideas. You can reach me on Instagram or Discord, where I enjoy connecting with fellow developers, gamers, and music lovers. I believe networking and collaboration are key to personal and professional growth, so don’t hesitate to say hi or ask any questions. I’m excited to learn from others and hopefully inspire some too. Whether it’s about programming, music, or gaming, feel free to reach out — I’m here to listen and share!</p>
-      <p>
-        <a href="https://instagram.com/advm.py" target="_blank" rel="noopener" class="social-link" style="color:#E1306C;">
-          📸 Instagram
-        </a>
-        <a href="https://discord.com/users/1182278308478586960" target="_blank" rel="noopener" class="social-link" style="color:#5865F2;">
-          💬 Discord
-        </a>
-      </p>
+      <p>You can reach me via email at <a href="mailto:adam@example.com" style="color:#3498db;">adam@example.com</a> or connect with me on <a href="https://linkedin.com/in/adam" target="_blank" rel="noopener" style="color:#3498db;">LinkedIn</a>. I’m always open to new opportunities and collaborations.</p>
     </div>
   </div>
 
-  <!-- Comments Section -->
   <div id="comments" class="content">
     <div id="commentsSection">
       <h2>Comments</h2>
       <form id="commentForm">
-        <input type="text" id="usernameInput" placeholder="Your name" required />
-        <textarea id="commentInput" rows="4" placeholder="Write your comment" required></textarea>
+        <input type="text" id="commentName" placeholder="Your name" required />
+        <textarea id="commentText" rows="4" placeholder="Your comment" required></textarea>
         <button type="submit">Submit</button>
-        <button type="button" id="cancelEditBtn" style="display:none; margin-left:10px;">Cancel Edit</button>
       </form>
       <div id="commentsList"></div>
     </div>
   </div>
 
-  <script>
-    const homeBtn = document.getElementById('homeBtn');
-    const links = {
-      about: document.getElementById('link-about'),
-      hobbies: document.getElementById('link-hobbies'),
-      goals: document.getElementById('link-goals'),
-      contact: document.getElementById('link-contact'),
-      comments: document.getElementById('link-comments')
-    };
+<script>
+  // متغيرات للروابط في nav و sidebar
+  const links = {
+    about: document.getElementById('link-about'),
+    hobbies: document.getElementById('link-hobbies'),
+    goals: document.getElementById('link-goals'),
+    contact: document.getElementById('link-contact'),
+    comments: document.getElementById('link-comments'),
+  };
+  const homeBtn = document.getElementById('homeBtn');
+  const sideMenu = document.getElementById('sideMenu');
+  const hamburger = document.getElementById('hamburger');
 
-    function clearActive() {
-      homeBtn.classList.remove('active');
-      Object.values(links).forEach(link => link.classList.remove('active'));
+  // إزالة active من كل الروابط
+  function clearActive() {
+    Object.values(links).forEach(link => link.classList.remove('active'));
+    homeBtn.classList.remove('active');
+  }
+
+  function showSection(sectionId) {
+    clearActive();
+    homeBtn.classList.remove('active');
+    document.getElementById('hero').style.display = 'none';
+    const sections = document.querySelectorAll('.content');
+    sections.forEach(sec => sec.style.display = 'none');
+    document.getElementById(sectionId).style.display = 'flex';
+    if (links[sectionId]) {
+      links[sectionId].classList.add('active');
     }
-
-    function showSection(sectionId) {
-      clearActive();
-      homeBtn.classList.remove('active');
-      document.getElementById('hero').style.display = 'none';
-      const sections = document.querySelectorAll('.content');
-      sections.forEach(sec => sec.style.display = 'none');
-      document.getElementById(sectionId).style.display = 'flex';
-      if (links[sectionId]) {
-        links[sectionId].classList.add('active');
-      }
+    // إغلاق القائمة الجانبية إن كانت مفتوحة
+    if (sideMenu.classList.contains('open')) {
+      toggleSideMenu();
     }
+  }
 
-    function showHome() {
-      clearActive();
-      homeBtn.classList.add('active');
-      document.getElementById('hero').style.display = 'flex';
-      const sections = document.querySelectorAll('.content');
-      sections.forEach(sec => sec.style.display = 'none');
+  function showHome() {
+    clearActive();
+    homeBtn.classList.add('active');
+    document.getElementById('hero').style.display = 'flex';
+    const sections = document.querySelectorAll('.content');
+    sections.forEach(sec => sec.style.display = 'none');
+    // إغلاق القائمة الجانبية إن كانت مفتوحة
+    if (sideMenu.classList.contains('open')) {
+      toggleSideMenu();
     }
+  }
 
-    showHome();
-
-    // DEVICE CHOICE LOGIC
-    const btnPC = document.getElementById('btnPC');
-    const btnPhone = document.getElementById('btnPhone');
-
-    function setDeviceMode(mode) {
-      if (mode === 'pc') {
-        document.body.classList.add('pcMode');
-        document.body.classList.remove('phoneMode');
-        btnPC.classList.add('activeDevice');
-        btnPhone.classList.remove('activeDevice');
-      } else if (mode === 'phone') {
-        document.body.classList.add('phoneMode');
-        document.body.classList.remove('pcMode');
-        btnPhone.classList.add('activeDevice');
-        btnPC.classList.remove('activeDevice');
-      }
-      localStorage.setItem('adamDeviceMode', mode);
-    }
-
-    // استرجاع الوضع المحفوظ
-    const savedMode = localStorage.getItem('adamDeviceMode');
-    if(savedMode === 'phone' || savedMode === 'pc') {
-      setDeviceMode(savedMode);
+  function toggleSideMenu() {
+    const isOpen = sideMenu.classList.contains('open');
+    if (isOpen) {
+      sideMenu.classList.remove('open');
+      sideMenu.setAttribute('aria-hidden', 'true');
     } else {
-      setDeviceMode('pc'); // الوضع الافتراضي PC
+      sideMenu.classList.add('open');
+      sideMenu.setAttribute('aria-hidden', 'false');
     }
+  }
 
-    btnPC.onclick = () => setDeviceMode('pc');
-    btnPhone.onclick = () => setDeviceMode('phone');
-
-
-    // COMMENTS LOGIC
-    const commentForm = document.getElementById('commentForm');
-    const commentsList = document.getElementById('commentsList');
-    const usernameInput = document.getElementById('usernameInput');
-    const commentInput = document.getElementById('commentInput');
-    const cancelEditBtn = document.getElementById('cancelEditBtn');
-
-    let comments = [];
-    let editingCommentId = null;
-
-    // جلب اسم المستخدم الحالي من localStorage
-    let currentUser = localStorage.getItem('adamCurrentUser') || '';
-
-    // إذا كان اسم المستخدم محفوظ، نضعه مباشرة في input الاسم
-    if(currentUser) {
-      usernameInput.value = currentUser;
+  hamburger.addEventListener('click', toggleSideMenu);
+  homeBtn.addEventListener('click', () => {
+    if (sideMenu.classList.contains('open')) {
+      toggleSideMenu();
     }
+  });
 
-    // عندما يتغير اسم المستخدم، نحفظه في localStorage ونعيد عرض التعليقات
-    usernameInput.addEventListener('change', () => {
-      currentUser = usernameInput.value.trim();
-      if(currentUser) {
-        localStorage.setItem('adamCurrentUser', currentUser);
-        renderComments();
-      }
+  // زرار اختيار الجهاز
+  const btnPC = document.getElementById('btnPC');
+  const btnPhone = document.getElementById('btnPhone');
+
+  btnPC.addEventListener('click', () => {
+    document.body.classList.remove('phoneMode');
+    document.body.classList.add('pcMode');
+    btnPC.classList.add('activeDevice');
+    btnPhone.classList.remove('activeDevice');
+    showHome();
+  });
+
+  btnPhone.addEventListener('click', () => {
+    document.body.classList.remove('pcMode');
+    document.body.classList.add('phoneMode');
+    btnPhone.classList.add('activeDevice');
+    btnPC.classList.remove('activeDevice');
+    showHome();
+  });
+
+  // بدءاً بـ pcMode
+  document.body.classList.add('pcMode');
+  btnPC.classList.add('activeDevice');
+
+  // ===== نظام التعليقات =====
+  const commentForm = document.getElementById('commentForm');
+  const commentName = document.getElementById('commentName');
+  const commentText = document.getElementById('commentText');
+  const commentsList = document.getElementById('commentsList');
+
+  // تحميل التعليقات من localStorage
+  function loadComments() {
+    const comments = JSON.parse(localStorage.getItem('comments')) || [];
+    commentsList.innerHTML = '';
+    comments.forEach((comment, index) => {
+      addCommentToDOM(comment.name, comment.text, index);
     });
+  }
 
-    // تحميل التعليقات من localStorage
-    function loadComments() {
-      const stored = localStorage.getItem('adamComments');
-      comments = stored ? JSON.parse(stored) : [];
-    }
+  // إضافة تعليق للـ DOM
+  function addCommentToDOM(name, text, index) {
+    const commentDiv = document.createElement('div');
+    commentDiv.classList.add('commentItem');
 
-    // حفظ التعليقات في localStorage
-    function saveComments() {
-      localStorage.setItem('adamComments', JSON.stringify(comments));
-    }
+    const header = document.createElement('div');
+    header.className = 'commentHeader';
 
-    // عرض التعليقات مع التحكم في أزرار تعديل وحذف خاصة بالمستخدم الحالي فقط
-    function renderComments() {
-      commentsList.innerHTML = '';
-      if (comments.length === 0) {
-        commentsList.innerHTML = '<p>No comments yet.</p>';
-        return;
-      }
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = name;
 
-      comments.forEach(c => {
-        const commentDiv = document.createElement('div');
-        commentDiv.classList.add('commentItem');
-        commentDiv.dataset.id = c.id;
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'commentActions';
 
-        // إذا كان صاحب التعليق هو المستخدم الحالي نظهر أزرار التعديل والحذف
-        let buttonsHtml = '';
-        if(currentUser && c.username === currentUser) {
-          buttonsHtml = `
-            <div class="commentActions">
-              <button class="editBtn" title="Edit">Edit</button>
-              <button class="deleteBtn" title="Delete">Delete</button>
-            </div>
-          `;
-        }
-
-        commentDiv.innerHTML = `
-          <div class="commentHeader">
-            <span>${escapeHtml(c.username)}</span>
-            <span>${c.date}</span>
-          </div>
-          <div class="commentText">${escapeHtml(c.text)}</div>
-          ${buttonsHtml}
-        `;
-
-        commentsList.appendChild(commentDiv);
-      });
-
-      // ربط أزرار التعديل
-      commentsList.querySelectorAll('.editBtn').forEach(btn => {
-        btn.onclick = () => {
-          const commentDiv = btn.closest('.commentItem');
-          const id = commentDiv.dataset.id;
-          startEditing(id);
-        };
-      });
-
-      // ربط أزرار الحذف
-      commentsList.querySelectorAll('.deleteBtn').forEach(btn => {
-        btn.onclick = () => {
-          const commentDiv = btn.closest('.commentItem');
-          const id = commentDiv.dataset.id;
-          deleteComment(id);
-        };
-      });
-    }
-
-    // بدء تعديل تعليق معين
-    function startEditing(id) {
-      const comment = comments.find(c => c.id === id);
-      if (!comment) return;
-      editingCommentId = id;
-      usernameInput.value = comment.username;
-      commentInput.value = comment.text;
-      cancelEditBtn.style.display = 'inline-block';
-      commentForm.querySelector('button[type="submit"]').textContent = 'Update';
-    }
-
-    // إلغاء التعديل
-    cancelEditBtn.onclick = () => {
-      editingCommentId = null;
-      commentInput.value = '';
-      commentForm.querySelector('button[type="submit"]').textContent = 'Submit';
-      cancelEditBtn.style.display = 'none';
-      if(currentUser) {
-        usernameInput.value = currentUser;
-      } else {
-        usernameInput.value = '';
-      }
+    // زر حذف
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.title = 'Delete comment';
+    deleteBtn.onclick = () => {
+      deleteComment(index);
     };
 
-    // حذف تعليق
-    function deleteComment(id) {
-      comments = comments.filter(c => c.id !== id);
-      saveComments();
-      renderComments();
-    }
-
-    // إظهار HTML آمن (تجنب XSS)
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    // إضافة أو تحديث تعليق
-    commentForm.onsubmit = e => {
-      e.preventDefault();
-      const username = usernameInput.value.trim();
-      const text = commentInput.value.trim();
-      if (!username || !text) {
-        alert('Please fill in both your name and comment.');
-        return;
-      }
-      if (editingCommentId) {
-        // تحديث
-        const comment = comments.find(c => c.id === editingCommentId);
-        if (comment && comment.username === username) {
-          comment.text = text;
-          comment.date = new Date().toLocaleString();
-        } else {
-          alert('You can only edit your own comments.');
-          return;
-        }
-      } else {
-        // إضافة جديد
-        comments.push({
-          id: Date.now().toString(),
-          username,
-          text,
-          date: new Date().toLocaleString()
-        });
-      }
-      saveComments();
-      renderComments();
-      commentInput.value = '';
-      editingCommentId = null;
-      commentForm.querySelector('button[type="submit"]').textContent = 'Submit';
-      cancelEditBtn.style.display = 'none';
-
-      // حفظ اسم المستخدم الحالي
-      currentUser = username;
-      localStorage.setItem('adamCurrentUser', currentUser);
-      usernameInput.value = currentUser;
+    // زر تعديل
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.title = 'Edit comment';
+    editBtn.onclick = () => {
+      editComment(index);
     };
 
-    // تحميل التعليقات عند بداية التحميل
+    actionsDiv.appendChild(editBtn);
+    actionsDiv.appendChild(deleteBtn);
+
+    header.appendChild(nameSpan);
+    header.appendChild(actionsDiv);
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'commentText';
+    textDiv.textContent = text;
+
+    commentDiv.appendChild(header);
+    commentDiv.appendChild(textDiv);
+
+    commentsList.appendChild(commentDiv);
+  }
+
+  // حذف تعليق
+  function deleteComment(index) {
+    let comments = JSON.parse(localStorage.getItem('comments')) || [];
+    comments.splice(index, 1);
+    localStorage.setItem('comments', JSON.stringify(comments));
     loadComments();
-    renderComments();
+  }
 
-  </script>
+  // تعديل تعليق
+  function editComment(index) {
+    let comments = JSON.parse(localStorage.getItem('comments')) || [];
+    const newText = prompt('Edit your comment:', comments[index].text);
+    if (newText !== null && newText.trim() !== '') {
+      comments[index].text = newText.trim();
+      localStorage.setItem('comments', JSON.stringify(comments));
+      loadComments();
+    }
+  }
+
+  // إضافة تعليق جديد
+  commentForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = commentName.value.trim();
+    const text = commentText.value.trim();
+    if (name === '' || text === '') {
+      alert('Please fill in both name and comment.');
+      return;
+    }
+    let comments = JSON.parse(localStorage.getItem('comments')) || [];
+    comments.push({name, text});
+    localStorage.setItem('comments', JSON.stringify(comments));
+    loadComments();
+    commentForm.reset();
+  });
+
+  // تحميل التعليقات عند بداية التحميل
+  loadComments();
+
+  // عرض الصفحة الرئيسية عند التحميل
+  showHome();
+
+</script>
 </body>
 </html>
