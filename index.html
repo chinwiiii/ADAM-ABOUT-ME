@@ -10,6 +10,7 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #f4f4f4f1;
       color: #333;
+      transition: background-color 0.5s ease;
     }
 
     nav {
@@ -22,6 +23,7 @@
       top: 0;
       z-index: 1001;
       position: relative;
+      transition: background-color 0.5s ease;
     }
 
     nav a, #homeBtn {
@@ -73,12 +75,38 @@
       font-size: 24px;
     }
 
+    /* زرار اختيار الجهاز في home */
+    #deviceChoice {
+      margin-top: 15px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    #deviceChoice button {
+      padding: 10px 22px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      background-color: #3498db;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    #deviceChoice button:hover {
+      background-color: #1d5ea8;
+    }
+
+    #deviceChoice button.activeDevice {
+      background-color: #1d5ea8;
+      cursor: default;
+    }
+
     .hero {
       height: 79.3vh;
-      background-image: url('https://i.pinimg.com/originals/0a/86/20/0a8620cac594d2015d1a692cbc9743b2.gif');
-      background-size: cover;
-      background-position: center 30%;
-      background-repeat: no-repeat;
       color: rgb(255, 255, 255);
       display: flex;
       justify-content: center;
@@ -89,15 +117,18 @@
       padding-right: 50px;
       animation: bgMove 60s ease-in-out infinite;
       overflow: hidden;
+      flex-direction: column;
+      transition: background-image 0.8s ease;
     }
 
     .hero h1 {
       font-size: 60px;
       color: rgba(255, 255, 255, 0.575);
       text-shadow: 3px 3px 10px rgba(0,0,0,0.7);
-      margin: 0;
+      margin: 0 0 10px 0;
     }
 
+    /* المحتوى: hidden by default */
     .content {
       position: relative;
       max-width: 800px;
@@ -117,6 +148,7 @@
       justify-content: center;
       align-items: flex-start;
       flex-direction: column;
+      transition: background-image 0.8s ease;
     }
 
     .content::before {
@@ -138,29 +170,126 @@
       border-radius: 10px;
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0);
       width: 100%;
+      transition: font-size 0.5s ease;
     }
 
-    #about {
+    /* الخلفيات لكل قسم حسب الجهاز - PC */
+    body.pcMode {
+      background-color: #f4f4f4f1;
+      color: #333;
+    }
+
+    body.pcMode nav {
+      background-color: #2c3e50;
+    }
+
+    body.pcMode .hero {
+      background-image: url('https://i.pinimg.com/originals/0a/86/20/0a8620cac594d2015d1a692cbc9743b2.gif');
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      font-size: 60px;
+    }
+
+    body.pcMode #about {
       background-image: url('https://i.pinimg.com/originals/d8/55/ad/d855ad574a63b786b26c8229365c506e.gif');
     }
 
-    #hobbies {
+    body.pcMode #hobbies {
       background-image: url('https://i.pinimg.com/originals/a8/d4/46/a8d446aeaded108a90c974a5d6a356d9.gif');
     }
 
-    #goals {
+    body.pcMode #goals {
       background-image: url('https://i.pinimg.com/originals/e0/0c/bf/e00cbfe0045873ca3306b88560f9dc01.gif');
     }
 
-    #contact {
+    body.pcMode #contact {
       background-image: url('https://i.pinimg.com/originals/a5/f0/5f/a5f05f2b8326abd955c787d446e30366.gif');
     }
-   
-    #comments {
+
+    body.pcMode #comments {
       background-image: url('https://i.pinimg.com/originals/90/70/32/9070324cdfc07c68d60eed0c39e77573.gif');
-      background-size: cover;
-      background-position: center 30%;
+    }
+
+    /* خلفيات وستايل خاص بالهاتف - phoneMode */
+    body.phoneMode {
+      background-color: #121212;
+      color: #eee;
+    }
+
+    body.phoneMode nav {
+      background-color: #111;
+      font-size: 14px;
+    }
+
+    body.phoneMode nav a, body.phoneMode #homeBtn {
+      font-size: 14px;
+      padding-bottom: 2px;
+    }
+
+    body.phoneMode nav a:hover, body.phoneMode #homeBtn:hover {
+      color: #44aaff;
+    }
+
+    body.phoneMode .hero {
+      background-image: url('https://i.pinimg.com/originals/30/99/9a/30999aee15d5f10a93aa568a2ecfd1bf.gif');
+      background-position: center 40%;
       background-repeat: no-repeat;
+      background-size: cover;
+      height: 70vh;
+      font-size: 36px;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 50px;
+      text-shadow: 2px 2px 15px #000;
+    }
+
+    body.phoneMode .hero h1 {
+      font-size: 36px;
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 2px 2px 15px #000;
+      margin-bottom: 12px;
+    }
+
+    body.phoneMode #deviceChoice {
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    body.phoneMode #deviceChoice button {
+      padding: 8px 16px;
+      font-size: 16px;
+      border-radius: 6px;
+    }
+
+    body.phoneMode .content > div {
+      font-size: 16px;
+      padding: 20px 25px;
+    }
+
+    body.phoneMode #about {
+      background-image: url('https://i.pinimg.com/originals/70/4e/9c/704e9cb1a269e13a73529b40c7e4ecf7.gif');
+      background-position: center 50%;
+    }
+
+    body.phoneMode #hobbies {
+      background-image: url('https://i.pinimg.com/originals/52/34/1b/52341b4e2933f2bafbb1a7f0e7b3bc72.gif');
+      background-position: center 50%;
+    }
+
+    body.phoneMode #goals {
+      background-image: url('https://i.pinimg.com/originals/97/d1/24/97d1248ab54e3b77084d4f9a1c5e5ae4.gif');
+      background-position: center 50%;
+    }
+
+    body.phoneMode #contact {
+      background-image: url('https://i.pinimg.com/originals/b2/88/30/b28830ecb6a6cc45de4157268aa6f7ab.gif');
+      background-position: center 50%;
+    }
+
+    body.phoneMode #comments {
+      background-image: url('https://i.pinimg.com/originals/5d/29/65/5d29650a1b556f4bb418edb9313d5b5f.gif');
+      background-position: center 50%;
     }
 
     /* Social links style */
@@ -305,6 +434,10 @@
 
   <div class="hero" id="hero">
     <h1>Hi, I'm Adam</h1>
+    <div id="deviceChoice">
+      <button id="btnPC">PC</button>
+      <button id="btnPhone">Téléphone</button>
+    </div>
   </div>
 
   <div id="about" class="content">
@@ -331,7 +464,7 @@
   <div id="contact" class="content">
     <div>
       <h2>Contact Me</h2>
-      <p>if you want to get in touch, I’m always open to meeting new people and sharing ideas. You can reach me on Instagram or Discord, where I enjoy connecting with fellow developers, gamers, and music lovers. I believe networking and collaboration are key to personal and professional growth, so don’t hesitate to say hi or ask any questions. I’m excited to learn from others and hopefully inspire some too. Whether it’s about programming, music, or gaming, feel free to reach out — I’m here to listen and share!</p>
+      <p>If you want to get in touch, I’m always open to meeting new people and sharing ideas. You can reach me on Instagram or Discord, where I enjoy connecting with fellow developers, gamers, and music lovers. I believe networking and collaboration are key to personal and professional growth, so don’t hesitate to say hi or ask any questions. I’m excited to learn from others and hopefully inspire some too. Whether it’s about programming, music, or gaming, feel free to reach out — I’m here to listen and share!</p>
       <p>
         <a href="https://instagram.com/advm.py" target="_blank" rel="noopener" class="social-link" style="color:#E1306C;">
           📸 Instagram
@@ -393,6 +526,37 @@
     }
 
     showHome();
+
+    // DEVICE CHOICE LOGIC
+    const btnPC = document.getElementById('btnPC');
+    const btnPhone = document.getElementById('btnPhone');
+
+    function setDeviceMode(mode) {
+      if (mode === 'pc') {
+        document.body.classList.add('pcMode');
+        document.body.classList.remove('phoneMode');
+        btnPC.classList.add('activeDevice');
+        btnPhone.classList.remove('activeDevice');
+      } else if (mode === 'phone') {
+        document.body.classList.add('phoneMode');
+        document.body.classList.remove('pcMode');
+        btnPhone.classList.add('activeDevice');
+        btnPC.classList.remove('activeDevice');
+      }
+      localStorage.setItem('adamDeviceMode', mode);
+    }
+
+    // استرجاع الوضع المحفوظ
+    const savedMode = localStorage.getItem('adamDeviceMode');
+    if(savedMode === 'phone' || savedMode === 'pc') {
+      setDeviceMode(savedMode);
+    } else {
+      setDeviceMode('pc'); // الوضع الافتراضي PC
+    }
+
+    btnPC.onclick = () => setDeviceMode('pc');
+    btnPhone.onclick = () => setDeviceMode('phone');
+
 
     // COMMENTS LOGIC
     const commentForm = document.getElementById('commentForm');
