@@ -489,6 +489,45 @@
       50% { background-position: center 30%; }
       100% { background-position: center 50%; }
     }
+
+    /* أزرار التواصل */
+    #contactButtons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .instagram-btn {
+      background: #E1306C;
+    }
+
+    .instagram-btn:hover {
+      background: #c12761;
+      transform: scale(1.05);
+    }
+
+    .discord-btn {
+      background: #7289DA;
+    }
+
+    .discord-btn:hover {
+      background: #5b6eae;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -515,29 +554,42 @@
   <div class="hero" id="hero">
     <h1>Hi, I'm Adam</h1>
     <div id="deviceChoice">
-      <button id="btnPC">PC</button>
-      <button id="btnPhone">Téléphone</button>
+      <button id="btnPC" onclick="setDevice('pc')" class="activeDevice">PC</button>
+      <button id="btnPhone" onclick="setDevice('phone')">Téléphone</button>
     </div>
   </div>
 
   <div id="about" class="content">
     <div>
       <h2>About Me</h2>
-      <p>Hello! My name is Adam, and I’m currently a high school student deeply passionate about the world of software development. Ever since I started exploring programming languages like Python and HTML, I have been fascinated by how coding can transform ideas into real, functioning projects. I spend a lot of my free time learning new programming concepts and working on small projects to improve my skills. My journey is just beginning, but I am determined to build a strong foundation in development that will support me throughout my academic and professional career.</p>
+      <p>Hello! I’m Adam, a passionate web developer who loves coding, gaming, and music. I enjoy creating interactive websites and learning new technologies every day. When I’m not programming, you can find me playing video games or jamming to my favorite tunes. I believe creativity and dedication are the keys to success in the tech world. Feel free to explore my site and get to know more about my interests and goals.</p>
+      <p>I'm always open to collaborate on exciting projects or just chat about tech and gaming. Thanks for visiting!</p>
     </div>
   </div>
 
   <div id="hobbies" class="content">
     <div>
       <h2>My Hobbies</h2>
-      <p>When I’m not coding, I love immersing myself in music, especially Moroccan rap, which inspires me and keeps me motivated. Music is a big part of my life and helps me stay focused and creative. Additionally, I enjoy playing various PC games, which not only provide entertainment but also challenge my strategic thinking and reflexes. Programming and gaming go hand in hand for me as both require problem-solving skills and creativity. I also spend time reading tech blogs and tutorials to stay updated on new tools and programming practices. These hobbies help me balance my academic life and keep my mind sharp and active.</p>
+      <ul>
+        <li>🎮 Gaming</li>
+        <li>🎵 Music Production</li>
+        <li>💻 Coding</li>
+        <li>📚 Reading tech blogs</li>
+        <li>🎨 Digital Art</li>
+      </ul>
     </div>
   </div>
 
   <div id="goals" class="content">
     <div>
       <h2>My Goals</h2>
-      <p>My goals are clear and ambitious. I want to excel in my studies and gain as much knowledge as possible about programming and computer science. Ultimately, I aspire to become a skilled programmer, whether by working on professional projects, contributing to open-source software, or even launching my own tech startup someday. I am especially interested in mastering Python and web development technologies, as I see them as powerful tools to create impactful digital solutions. Education is very important to me, and I plan to pursue higher education in computer science or a related field. I believe that dedication, continuous learning, and practical experience will help me achieve these dreams and become a valuable contributor to the tech community.</p>
+      <ol>
+        <li>Become a full-stack developer</li>
+        <li>Build a successful web app</li>
+        <li>Contribute to open source</li>
+        <li>Improve my skills continuously</li>
+        <li>Share knowledge with others</li>
+      </ol>
     </div>
   </div>
 
@@ -545,83 +597,95 @@
     <div>
       <h2>Contact Me</h2>
       <p>If you want to get in touch, I’m always open to meeting new people and sharing ideas. You can reach me on Instagram or Discord, where I enjoy connecting with fellow developers, gamers, and music lovers. I believe networking and collaboration are key to personal and professional growth, so don’t hesitate to say hi or ask any questions. I’m excited to learn from others and hopefully inspire some too. Whether it’s about programming, music, or gaming, feel free to reach out — I’m here to listen and share!</p>
+      <div id="contactButtons" style="margin-top:20px;">
+        <a href="https://instagram.com/advm.py" target="_blank" class="social-btn instagram-btn" rel="noopener noreferrer">Instagram</a>
+        <a href="https://discord.com/users/1182278308478586960" target="_blank" class="social-btn discord-btn" rel="noopener noreferrer">Discord</a>
+      </div>
     </div>
   </div>
 
   <div id="comments" class="content">
     <div id="commentsSection">
       <h2>Comments</h2>
-      <form id="commentForm" onsubmit="return addComment(event)">
-        <input type="text" id="commenterName" placeholder="Your name" required />
-        <textarea id="commentText" rows="4" placeholder="Your comment" required></textarea>
-        <button type="submit">Add Comment</button>
+      <form id="commentForm" onsubmit="submitComment(event)">
+        <input type="text" id="commentName" placeholder="Your Name" required />
+        <textarea id="commentText" placeholder="Your Comment" rows="3" required></textarea>
+        <button type="submit">Submit</button>
       </form>
-      <div id="commentsList"></div>
+      <div id="commentList"></div>
     </div>
   </div>
 
   <script>
-    // اختيارات الجهاز PC / Phone
-    const btnPC = document.getElementById('btnPC');
-    const btnPhone = document.getElementById('btnPhone');
-    const body = document.body;
-    const hero = document.getElementById('hero');
+    const sections = ['about', 'hobbies', 'goals', 'contact', 'comments'];
+    let currentSection = null;
+    let currentDevice = 'pc';
 
-    btnPC.addEventListener('click', () => {
-      if(!body.classList.contains('pcMode')) {
-        body.classList.add('pcMode');
-        body.classList.remove('phoneMode');
-        btnPC.classList.add('activeDevice');
-        btnPhone.classList.remove('activeDevice');
-        showHome();
-      }
-    });
+    function showSection(section) {
+      if (!sections.includes(section)) return;
 
-    btnPhone.addEventListener('click', () => {
-      if(!body.classList.contains('phoneMode')) {
-        body.classList.add('phoneMode');
-        body.classList.remove('pcMode');
-        btnPhone.classList.add('activeDevice');
-        btnPC.classList.remove('activeDevice');
-        showHome();
-      }
-    });
+      sections.forEach(s => {
+        document.getElementById(s).style.display = (s === section) ? 'flex' : 'none';
+        document.getElementById('link-' + s).classList.toggle('active', s === section);
+        document.getElementById('side-' + s).classList.toggle('active', s === section);
+      });
 
-    // عرض الصفحة الرئيسية
+      document.getElementById('homeBtn').classList.remove('active');
+      document.getElementById('hero').style.display = 'none';
+      currentSection = section;
+
+      // close side menu on mobile if open
+      closeSideMenu();
+    }
+
     function showHome() {
-      // إخفاء جميع الأقسام
-      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
-      hero.style.display = 'flex';
-      setActiveLink(null);
+      sections.forEach(s => {
+        document.getElementById(s).style.display = 'none';
+        document.getElementById('link-' + s).classList.remove('active');
+        document.getElementById('side-' + s).classList.remove('active');
+      });
+      document.getElementById('homeBtn').classList.add('active');
+      document.getElementById('hero').style.display = 'flex';
+      currentSection = null;
+
+      // close side menu on mobile if open
+      closeSideMenu();
     }
 
-    // عرض أقسام أخرى
-    function showSection(sectionId) {
-      hero.style.display = 'none';
-      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
-      const section = document.getElementById(sectionId);
-      if(section) section.style.display = 'flex';
-      setActiveLink(sectionId);
-    }
+    function setDevice(device) {
+      if (device !== 'pc' && device !== 'phone') return;
 
-    // تحديد الرابط النشط في nav
-    function setActiveLink(activeId) {
-      // ازالة كل التفعيلات
-      document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
-      if(activeId) {
-        const activeLink = document.getElementById('link-' + activeId);
-        if(activeLink) activeLink.classList.add('active');
+      currentDevice = device;
+
+      if (device === 'pc') {
+        document.body.classList.add('pcMode');
+        document.body.classList.remove('phoneMode');
+        document.getElementById('btnPC').classList.add('activeDevice');
+        document.getElementById('btnPhone').classList.remove('activeDevice');
+      } else {
+        document.body.classList.add('phoneMode');
+        document.body.classList.remove('pcMode');
+        document.getElementById('btnPhone').classList.add('activeDevice');
+        document.getElementById('btnPC').classList.remove('activeDevice');
       }
     }
 
-    // عنصر الهامبرغر و sideMenu
+    // Hamburger menu toggling for mobile
     const hamburger = document.getElementById('hamburger');
     const sideMenu = document.getElementById('sideMenu');
 
-    hamburger.addEventListener('click', toggleSideMenu);
+    hamburger.addEventListener('click', () => {
+      if (sideMenu.classList.contains('open')) {
+        sideMenu.classList.remove('open');
+        sideMenu.setAttribute('aria-hidden', 'true');
+      } else {
+        sideMenu.classList.add('open');
+        sideMenu.setAttribute('aria-hidden', 'false');
+      }
+    });
 
     function toggleSideMenu() {
-      if(sideMenu.classList.contains('open')) {
+      if (sideMenu.classList.contains('open')) {
         sideMenu.classList.remove('open');
         sideMenu.setAttribute('aria-hidden', 'true');
       } else {
@@ -630,92 +694,42 @@
       }
     }
 
-    // إغلاق القائمة الجانبية عند اختيار رابط من القائمة
-    sideMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
+    function closeSideMenu() {
+      if (sideMenu.classList.contains('open')) {
         sideMenu.classList.remove('open');
         sideMenu.setAttribute('aria-hidden', 'true');
-      });
-    });
-
-    // عند فتح الصفحة لأول مرة
-    window.addEventListener('load', () => {
-      // الافتراضي PC Mode
-      body.classList.add('pcMode');
-      btnPC.classList.add('activeDevice');
-      showHome();
-    });
-
-    // --------- Comments System -----------
-
-    const commentForm = document.getElementById('commentForm');
-    const commentsList = document.getElementById('commentsList');
-
-    // جلب التعليقات من localStorage وعرضها
-    function loadComments() {
-      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
-      commentsList.innerHTML = '';
-      comments.forEach((comment, index) => {
-        const commentEl = document.createElement('div');
-        commentEl.classList.add('commentItem');
-        commentEl.innerHTML = `
-          <div class="commentHeader">
-            <span>${escapeHTML(comment.name)}</span>
-            <span>${new Date(comment.date).toLocaleString()}</span>
-          </div>
-          <div class="commentText">${escapeHTML(comment.text)}</div>
-          <div class="commentActions">
-            <button onclick="deleteComment(${index})" title="Delete">Delete</button>
-          </div>
-        `;
-        commentsList.appendChild(commentEl);
-      });
+      }
     }
 
-    // إضافة تعليق جديد
-    function addComment(event) {
-      event.preventDefault();
-      const name = commentForm.querySelector('#commenterName').value.trim();
-      const text = commentForm.querySelector('#commentText').value.trim();
-      if(!name || !text) return false;
-      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
-      comments.push({
-        name,
-        text,
-        date: new Date().toISOString()
-      });
-      localStorage.setItem('comments', JSON.stringify(comments));
-      commentForm.reset();
-      loadComments();
-      return false;
+    // Comment system (simplified for demonstration)
+    function submitComment(e) {
+      e.preventDefault();
+      const name = document.getElementById('commentName').value.trim();
+      const text = document.getElementById('commentText').value.trim();
+      if (!name || !text) return;
+
+      const commentList = document.getElementById('commentList');
+      const commentItem = document.createElement('div');
+      commentItem.className = 'commentItem';
+
+      const commentHeader = document.createElement('div');
+      commentHeader.className = 'commentHeader';
+      commentHeader.textContent = name + ' • ' + new Date().toLocaleString();
+
+      const commentText = document.createElement('div');
+      commentText.className = 'commentText';
+      commentText.textContent = text;
+
+      commentItem.appendChild(commentHeader);
+      commentItem.appendChild(commentText);
+      commentList.prepend(commentItem);
+
+      document.getElementById('commentForm').reset();
     }
 
-    // حذف تعليق
-    function deleteComment(index) {
-      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
-      comments.splice(index, 1);
-      localStorage.setItem('comments', JSON.stringify(comments));
-      loadComments();
-    }
-
-    // تعقيم النص لمنع حقن HTML
-    function escapeHTML(text) {
-      return text.replace(/[&<>"']/g, function(m) {
-        return {
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#39;'
-        }[m];
-      });
-    }
-
-    // تحميل التعليقات عند بدء الصفحة
-    window.onload = () => {
-      loadComments();
-    }
+    // Initialize default view
+    showHome();
+    setDevice('pc');
   </script>
-
 </body>
 </html>
