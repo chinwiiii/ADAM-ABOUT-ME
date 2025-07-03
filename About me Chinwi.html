@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adam | About Me</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4f1;
+      color: #333;
+    }
+
+    nav {
+      background-color: #2c3e50;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      position: relative;
+    }
+
+    nav a, #homeBtn {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s ease, transform 0.3s ease;
+      user-select: none;
+      padding-bottom: 4px;
+    }
+
+    nav a:hover, #homeBtn:hover {
+      color: #3498db;
+      transform: scale(1.1);
+    }
+
+    nav a::after, #homeBtn::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #3498db;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after, #homeBtn:hover::after {
+      width: 100%;
+    }
+
+    nav a.active, #homeBtn.active {
+      color: #3498db;
+      transform: scale(1.1);
+    }
+
+    nav a.active::after, #homeBtn.active::after {
+      width: 100%;
+    }
+
+    #homeBtn {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+    }
+
+    .hero {
+      height: 79.3vh;
+      background-image: url('https://i.pinimg.com/originals/0a/86/20/0a8620cac594d2015d1a692cbc9743b2.gif');
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      color: rgb(255, 255, 255);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
+      text-align: center;
+      padding-left: 50px;
+      padding-right: 50px;
+      animation: bgMove 60s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-size: 60px;
+      color: rgba(255, 255, 255, 0.575);
+      text-shadow: 3px 3px 10px rgba(0,0,0,0.7);
+      margin: 0;
+    }
+
+    .content {
+      position: relative;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.39);
+      color: rgb(255, 255, 255);
+      display: none;
+      min-height: 79vh;
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      overflow: auto;
+      animation: fadeIn 0.5s ease, bgMove 60s ease-in-out infinite;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .content::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.329);
+      border-radius: 10px;
+      z-index: 0;
+    }
+
+    .content > div {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 20px 40px 20px;
+      padding: 25px 35px;
+      background: rgba(0, 0, 0, 0);
+      border-radius: 10px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0);
+      width: 100%;
+    }
+
+    #about {
+      background-image: url('https://i.pinimg.com/originals/d8/55/ad/d855ad574a63b786b26c8229365c506e.gif');
+    }
+
+    #hobbies {
+      background-image: url('https://i.pinimg.com/originals/a8/d4/46/a8d446aeaded108a90c974a5d6a356d9.gif');
+    }
+
+    #goals {
+      background-image: url('https://i.pinimg.com/originals/e0/0c/bf/e00cbfe0045873ca3306b88560f9dc01.gif');
+    }
+
+    #contact {
+      background-image: url('https://i.pinimg.com/originals/a5/f0/5f/a5f05f2b8326abd955c787d446e30366.gif');
+    }
+   
+    #comments {
+      background-image: url('https://i.pinimg.com/originals/90/70/32/9070324cdfc07c68d60eed0c39e77573.gif');
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+    }
+
+    /* Social links style */
+    .social-link {
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 20px;
+      transition: transform 0.3s ease;
+      user-select: none;
+      margin-right: 20px;
+      display: inline-block;
+    }
+
+    .social-link:hover {
+      transform: scale(1.2);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* Comment section styles */
+    #commentsSection {
+      background: rgba(0, 0, 0, 0);
+      padding: 20px;
+      border-radius: 10px;
+      color: rgb(255, 255, 255);
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    #commentForm {
+      margin-bottom: 30px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.116);
+      padding: 15px;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    /* تعديل الشفافية على input و textarea */
+    #commentForm input,
+    #commentForm textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 12px 0;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-family: 'Segoe UI', sans-serif;
+      resize: vertical;
+      box-sizing: border-box;
+      background-color: rgba(255, 255, 255, 0.15); /* شفافية خفيفة */
+      color: #fff; /* نص أبيض واضح */
+    }
+
+    #commentForm button {
+      background-color: #00000000;
+      border: none;
+      color: rgba(255, 255, 255, 0.199);
+      padding: 10px 18px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #commentForm button:hover {
+      background-color: #fffcfc49;
+    }
+
+    .commentItem {
+      background: rgba(255, 255, 255, 0.377);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      word-wrap: break-word;
+      position: relative;
+    }
+
+    .commentHeader {
+      font-weight: bold;
+      color: #3498db;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .commentText {
+      font-size: 16px;
+      white-space: pre-wrap;
+      margin-bottom: 6px;
+    }
+
+    .commentActions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      position: static;
+      top: auto;
+      right: auto;
+      margin-top: 8px;
+    }
+
+    .commentActions button {
+      background-color: transparent;
+      border: none;
+      color: #3498db;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 8px;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .commentActions button:hover {
+      color: #1d5ea8;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes bgMove {
+      0% { background-position: center 10%; }
+      50% { background-position: center 30%; }
+      100% { background-position: center 50%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div id="homeBtn" onclick="showHome()" title="Home">🏠</div>
+    <a onclick="showSection('about')" id="link-about">About</a>
+    <a onclick="showSection('hobbies')" id="link-hobbies">Hobbies</a>
+    <a onclick="showSection('goals')" id="link-goals">Goals</a>
+    <a onclick="showSection('contact')" id="link-contact">Contact</a>
+    <a onclick="showSection('comments')" id="link-comments">Comments</a>
+  </nav>
+
+  <div class="hero" id="hero">
+    <h1>Hi, I'm Adam</h1>
+  </div>
+
+  <div id="about" class="content">
+    <div>
+      <h2>About Me</h2>
+      <p>Hello! My name is Adam, and I’m currently a high school student deeply passionate about the world of software development. Ever since I started exploring programming languages like Python and HTML, I have been fascinated by how coding can transform ideas into real, functioning projects. I spend a lot of my free time learning new programming concepts and working on small projects to improve my skills. My journey is just beginning, but I am determined to build a strong foundation in development that will support me throughout my future career. Besides programming, I am also curious about technology in general and enjoy discovering the latest trends and innovations. I believe that with hard work and dedication, I can turn my passion into a lifelong career.</p>
+    </div>
+  </div>
+
+  <div id="hobbies" class="content">
+    <div>
+      <h2>My Hobbies</h2>
+      <p>When I’m not coding, I love immersing myself in music, especially Moroccan rap, which inspires me and keeps me motivated. Music is a big part of my life and helps me stay focused and creative. Additionally, I enjoy playing various PC games, which not only provide entertainment but also challenge my strategic thinking and reflexes. Programming and gaming go hand in hand for me as both require problem-solving skills and creativity. I also spend time reading tech blogs and tutorials to stay updated on new tools and programming practices. These hobbies help me balance my academic life and keep my mind sharp and active.</p>
+    </div>
+  </div>
+
+  <div id="goals" class="content">
+    <div>
+      <h2>My Goals</h2>
+      <p>My goals are clear and ambitious. I want to excel in my studies and gain as much knowledge as possible about programming and computer science. Ultimately, I aspire to become a skilled programmer, whether by working on professional projects, contributing to open-source software, or even launching my own tech startup someday. I am especially interested in mastering Python and web development technologies, as I see them as powerful tools to create impactful digital solutions. Education is very important to me, and I plan to pursue higher education in computer science or a related field. I believe that dedication, continuous learning, and practical experience will help me achieve these dreams and become a valuable contributor to the tech community.</p>
+    </div>
+  </div>
+
+  <div id="contact" class="content">
+    <div>
+      <h2>Contact Me</h2>
+      <p>if you want to get in touch, I’m always open to meeting new people and sharing ideas. You can reach me on Instagram or Discord, where I enjoy connecting with fellow developers, gamers, and music lovers. I believe networking and collaboration are key to personal and professional growth, so don’t hesitate to say hi or ask any questions. I’m excited to learn from others and hopefully inspire some too. Whether it’s about programming, music, or gaming, feel free to reach out — I’m here to listen and share!</p>
+      <p>
+        <a href="https://instagram.com/advm.py" target="_blank" rel="noopener" class="social-link" style="color:#E1306C;">
+          📸 Instagram
+        </a>
+        <a href="https://discord.com/users/1182278308478586960" target="_blank" rel="noopener" class="social-link" style="color:#5865F2;">
+          💬 Discord
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Comments Section -->
+  <div id="comments" class="content">
+    <div id="commentsSection">
+      <h2>Comments</h2>
+      <form id="commentForm">
+        <input type="text" id="usernameInput" placeholder="Your name" required />
+        <textarea id="commentInput" rows="4" placeholder="Write your comment" required></textarea>
+        <button type="submit">Submit</button>
+        <button type="button" id="cancelEditBtn" style="display:none; margin-left:10px;">Cancel Edit</button>
+      </form>
+      <div id="commentsList"></div>
+    </div>
+  </div>
+
+  <script>
+    const homeBtn = document.getElementById('homeBtn');
+    const links = {
+      about: document.getElementById('link-about'),
+      hobbies: document.getElementById('link-hobbies'),
+      goals: document.getElementById('link-goals'),
+      contact: document.getElementById('link-contact'),
+      comments: document.getElementById('link-comments')
+    };
+
+    function clearActive() {
+      homeBtn.classList.remove('active');
+      Object.values(links).forEach(link => link.classList.remove('active'));
+    }
+
+    function showSection(sectionId) {
+      clearActive();
+      homeBtn.classList.remove('active');
+      document.getElementById('hero').style.display = 'none';
+      const sections = document.querySelectorAll('.content');
+      sections.forEach(sec => sec.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'flex';
+      if (links[sectionId]) {
+        links[sectionId].classList.add('active');
+      }
+    }
+
+    function showHome() {
+      clearActive();
+      homeBtn.classList.add('active');
+      document.getElementById('hero').style.display = 'flex';
+      const sections = document.querySelectorAll('.content');
+      sections.forEach(sec => sec.style.display = 'none');
+    }
+
+    showHome();
+
+    // COMMENTS LOGIC
+    const commentForm = document.getElementById('commentForm');
+    const commentsList = document.getElementById('commentsList');
+    const usernameInput = document.getElementById('usernameInput');
+    const commentInput = document.getElementById('commentInput');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+    let comments = [];
+    let editingCommentId = null;
+
+    // جلب اسم المستخدم الحالي من localStorage
+    let currentUser = localStorage.getItem('adamCurrentUser') || '';
+
+    // إذا كان اسم المستخدم محفوظ، نضعه مباشرة في input الاسم
+    if(currentUser) {
+      usernameInput.value = currentUser;
+    }
+
+    // عندما يتغير اسم المستخدم، نحفظه في localStorage ونعيد عرض التعليقات
+    usernameInput.addEventListener('change', () => {
+      currentUser = usernameInput.value.trim();
+      if(currentUser) {
+        localStorage.setItem('adamCurrentUser', currentUser);
+        renderComments();
+      }
+    });
+
+    // تحميل التعليقات من localStorage
+    function loadComments() {
+      const stored = localStorage.getItem('adamComments');
+      comments = stored ? JSON.parse(stored) : [];
+    }
+
+    // حفظ التعليقات في localStorage
+    function saveComments() {
+      localStorage.setItem('adamComments', JSON.stringify(comments));
+    }
+
+    // عرض التعليقات مع التحكم في أزرار تعديل وحذف خاصة بالمستخدم الحالي فقط
+    function renderComments() {
+      commentsList.innerHTML = '';
+      if (comments.length === 0) {
+        commentsList.innerHTML = '<p>No comments yet.</p>';
+        return;
+      }
+
+      comments.forEach(c => {
+        const commentDiv = document.createElement('div');
+        commentDiv.classList.add('commentItem');
+        commentDiv.dataset.id = c.id;
+
+        // إذا كان صاحب التعليق هو المستخدم الحالي نظهر أزرار التعديل والحذف
+        let buttonsHtml = '';
+        if(currentUser && c.username === currentUser) {
+          buttonsHtml = `
+            <div class="commentActions">
+              <button class="editBtn" title="Edit">Edit</button>
+              <button class="deleteBtn" title="Delete">Delete</button>
+            </div>
+          `;
+        }
+
+        commentDiv.innerHTML = `
+          <div class="commentHeader">
+            <span>${escapeHtml(c.username)}</span>
+            <span>${c.date}</span>
+          </div>
+          <div class="commentText">${escapeHtml(c.text)}</div>
+          ${buttonsHtml}
+        `;
+
+        commentsList.appendChild(commentDiv);
+      });
+
+      // ربط أزرار التعديل
+      commentsList.querySelectorAll('.editBtn').forEach(btn => {
+        btn.onclick = () => {
+          const commentDiv = btn.closest('.commentItem');
+          const id = commentDiv.dataset.id;
+          startEditing(id);
+        };
+      });
+
+      // ربط أزرار الحذف
+      commentsList.querySelectorAll('.deleteBtn').forEach(btn => {
+        btn.onclick = () => {
+          const commentDiv = btn.closest('.commentItem');
+          const id = commentDiv.dataset.id;
+          deleteComment(id);
+        };
+      });
+    }
+
+    // بدء تعديل تعليق معين
+    function startEditing(id) {
+      const comment = comments.find(c => c.id === id);
+      if (!comment) return;
+      editingCommentId = id;
+      usernameInput.value = comment.username;
+      commentInput.value = comment.text;
+      cancelEditBtn.style.display = 'inline-block';
+      commentForm.querySelector('button[type="submit"]').textContent = 'Update';
+    }
+
+    // إلغاء التعديل
+    cancelEditBtn.onclick = () => {
+      editingCommentId = null;
+      commentInput.value = '';
+      commentForm.querySelector('button[type="submit"]').textContent = 'Submit';
+      cancelEditBtn.style.display = 'none';
+      if(currentUser) {
+        usernameInput.value = currentUser;
+      } else {
+        usernameInput.value = '';
+      }
+    };
+
+    // حذف تعليق
+    function deleteComment(id) {
+      comments = comments.filter(c => c.id !== id);
+      saveComments();
+      renderComments();
+    }
+
+    // إظهار HTML آمن (تجنب XSS)
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // إضافة أو تحديث تعليق
+    commentForm.onsubmit = e => {
+      e.preventDefault();
+      const username = usernameInput.value.trim();
+      const text = commentInput.value.trim();
+      if (!username || !text) {
+        alert('Please fill in both your name and comment.');
+        return;
+      }
+      if (editingCommentId) {
+        // تحديث
+        const comment = comments.find(c => c.id === editingCommentId);
+        if (comment && comment.username === username) {
+          comment.text = text;
+          comment.date = new Date().toLocaleString();
+        } else {
+          alert('You can only edit your own comments.');
+          return;
+        }
+      } else {
+        // إضافة جديد
+        comments.push({
+          id: Date.now().toString(),
+          username,
+          text,
+          date: new Date().toLocaleString()
+        });
+      }
+      saveComments();
+      renderComments();
+      commentInput.value = '';
+      editingCommentId = null;
+      commentForm.querySelector('button[type="submit"]').textContent = 'Submit';
+      cancelEditBtn.style.display = 'none';
+
+      // حفظ اسم المستخدم الحالي
+      currentUser = username;
+      localStorage.setItem('adamCurrentUser', currentUser);
+      usernameInput.value = currentUser;
+    };
+
+    // تحميل التعليقات عند بداية التحميل
+    loadComments();
+    renderComments();
+
+  </script>
+</body>
+</html>
