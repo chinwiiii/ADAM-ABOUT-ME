@@ -73,6 +73,7 @@
       top: 50%;
       transform: translateY(-50%);
       font-size: 24px;
+      z-index: 1015;
     }
 
     /* زرار اختيار الجهاز في home */
@@ -223,10 +224,22 @@
       position: relative;
     }
 
-    body.phoneMode nav a, body.phoneMode #homeBtn {
+    /* روابط nav في الهاتف مخفية */
+    body.phoneMode nav a {
       display: none;
-      font-size: 14px;
-      padding-bottom: 2px;
+    }
+
+    /* homeBtn في الهاتف وسط nav */
+    body.phoneMode #homeBtn {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: white;
+      z-index: 1015;
+      cursor: pointer;
     }
 
     /* زرار الهامبرغر - يظهر فقط في الهاتف */
@@ -240,32 +253,23 @@
       left: 15px;
       transform: translateY(-50%);
       user-select: none;
-      z-index: 1010;
+      z-index: 1015;
+      transition: color 0.3s ease;
+    }
+
+    #hamburger:hover {
+      color: #3498db;
     }
 
     body.phoneMode #hamburger {
       display: block;
     }
 
-    /* عرض homeBtn يكون وسط nav في الهاتف */
-    body.phoneMode #homeBtn {
-      display: block;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 24px;
-    }
-
-    body.phoneMode nav a:hover, body.phoneMode #homeBtn:hover {
-      color: #44aaff;
-    }
-
     /* القائمة الجانبية المنبثقة */
     #sideMenu {
       position: fixed;
       top: 0;
-      left: -250px; /* مخفية خارج الشاشة */
+      left: -260px; /* مخفية خارج الشاشة */
       width: 250px;
       height: 100vh;
       background-color: #222;
@@ -276,6 +280,7 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      overflow-y: auto;
     }
 
     #sideMenu a {
@@ -297,8 +302,8 @@
     }
 
     body.phoneMode .hero {
-      background-image: url('https://i.pinimg.com/originals/30/99/9a/30999aee15d5f10a93aa568a2ecfd1bf.gif');
-      background-position: center 40%;
+      background-image: url('https://i.pinimg.com/736x/b7/ec/2b/b7ec2b1bb9109dd5c1a63dd61a40d491.jpg');
+      background-position: center 50%;
       background-repeat: no-repeat;
       background-size: cover;
       height: 70vh;
@@ -518,234 +523,199 @@
   <div id="about" class="content">
     <div>
       <h2>About Me</h2>
-      <p>Hello! My name is Adam, and I’m currently a high school student deeply passionate about the world of software development. Ever since I started exploring programming languages like Python and HTML, I have been fascinated by how coding can transform ideas into real, functioning projects. I spend a lot of my free time learning new programming concepts and working on small projects to improve my skills. My journey is just beginning, but I am determined to build a strong foundation in development that will support me throughout my academic and professional career.</p>
+      <p>Hello! My name is Adam, and I’m currently a high school student deeply passionate about computers and programming. I love exploring technology and creating projects that challenge me.</p>
     </div>
   </div>
 
   <div id="hobbies" class="content">
     <div>
-      <h2>Hobbies</h2>
-      <p>I enjoy reading books, especially in science fiction and fantasy genres, as well as playing video games in my free time. Music also plays a big role in my life—I love discovering new artists and attending concerts whenever possible. Additionally, I’m passionate about sports and staying active, which helps me maintain a balanced lifestyle.</p>
+      <h2>My Hobbies</h2>
+      <p>My favorite hobbies include programming, playing football, and spending time with my family and friends.</p>
     </div>
   </div>
 
   <div id="goals" class="content">
     <div>
-      <h2>Goals</h2>
-      <p>My primary goal is to become a skilled software engineer, contributing to innovative projects that make a difference. In the short term, I aim to complete my high school education with excellent grades while continuously improving my programming skills. Long term, I hope to attend a top university specializing in computer science and eventually work at a leading tech company where I can grow professionally and personally.</p>
+      <h2>My Goals</h2>
+      <p>My short-term goals include improving my programming skills and learning new languages. Long-term, I aspire to build innovative software and maybe start my own company someday.</p>
     </div>
   </div>
 
   <div id="contact" class="content">
     <div>
       <h2>Contact Me</h2>
-      <p>You can reach me via email at <a href="mailto:adam@example.com" style="color:#3498db;">adam@example.com</a> or connect with me on <a href="https://linkedin.com/in/adam" target="_blank" rel="noopener" style="color:#3498db;">LinkedIn</a>. I’m always open to new opportunities and collaborations.</p>
+      <p>You can reach me on Instagram: <a href="https://instagram.com/adam" class="social-link" target="_blank" rel="noopener noreferrer">@adam</a></p>
     </div>
   </div>
 
   <div id="comments" class="content">
     <div id="commentsSection">
       <h2>Comments</h2>
-      <form id="commentForm">
-        <input type="text" id="commentName" placeholder="Your name" required />
+      <form id="commentForm" onsubmit="return addComment(event)">
+        <input type="text" id="commenterName" placeholder="Your name" required />
         <textarea id="commentText" rows="4" placeholder="Your comment" required></textarea>
-        <button type="submit">Submit</button>
+        <button type="submit">Add Comment</button>
       </form>
       <div id="commentsList"></div>
     </div>
   </div>
 
-<script>
-  // متغيرات للروابط في nav و sidebar
-  const links = {
-    about: document.getElementById('link-about'),
-    hobbies: document.getElementById('link-hobbies'),
-    goals: document.getElementById('link-goals'),
-    contact: document.getElementById('link-contact'),
-    comments: document.getElementById('link-comments'),
-  };
-  const homeBtn = document.getElementById('homeBtn');
-  const sideMenu = document.getElementById('sideMenu');
-  const hamburger = document.getElementById('hamburger');
+  <script>
+    // اختيارات الجهاز PC / Phone
+    const btnPC = document.getElementById('btnPC');
+    const btnPhone = document.getElementById('btnPhone');
+    const body = document.body;
+    const hero = document.getElementById('hero');
 
-  // إزالة active من كل الروابط
-  function clearActive() {
-    Object.values(links).forEach(link => link.classList.remove('active'));
-    homeBtn.classList.remove('active');
-  }
-
-  function showSection(sectionId) {
-    clearActive();
-    homeBtn.classList.remove('active');
-    document.getElementById('hero').style.display = 'none';
-    const sections = document.querySelectorAll('.content');
-    sections.forEach(sec => sec.style.display = 'none');
-    document.getElementById(sectionId).style.display = 'flex';
-    if (links[sectionId]) {
-      links[sectionId].classList.add('active');
-    }
-    // إغلاق القائمة الجانبية إن كانت مفتوحة
-    if (sideMenu.classList.contains('open')) {
-      toggleSideMenu();
-    }
-  }
-
-  function showHome() {
-    clearActive();
-    homeBtn.classList.add('active');
-    document.getElementById('hero').style.display = 'flex';
-    const sections = document.querySelectorAll('.content');
-    sections.forEach(sec => sec.style.display = 'none');
-    // إغلاق القائمة الجانبية إن كانت مفتوحة
-    if (sideMenu.classList.contains('open')) {
-      toggleSideMenu();
-    }
-  }
-
-  function toggleSideMenu() {
-    const isOpen = sideMenu.classList.contains('open');
-    if (isOpen) {
-      sideMenu.classList.remove('open');
-      sideMenu.setAttribute('aria-hidden', 'true');
-    } else {
-      sideMenu.classList.add('open');
-      sideMenu.setAttribute('aria-hidden', 'false');
-    }
-  }
-
-  hamburger.addEventListener('click', toggleSideMenu);
-  homeBtn.addEventListener('click', () => {
-    if (sideMenu.classList.contains('open')) {
-      toggleSideMenu();
-    }
-  });
-
-  // زرار اختيار الجهاز
-  const btnPC = document.getElementById('btnPC');
-  const btnPhone = document.getElementById('btnPhone');
-
-  btnPC.addEventListener('click', () => {
-    document.body.classList.remove('phoneMode');
-    document.body.classList.add('pcMode');
-    btnPC.classList.add('activeDevice');
-    btnPhone.classList.remove('activeDevice');
-    showHome();
-  });
-
-  btnPhone.addEventListener('click', () => {
-    document.body.classList.remove('pcMode');
-    document.body.classList.add('phoneMode');
-    btnPhone.classList.add('activeDevice');
-    btnPC.classList.remove('activeDevice');
-    showHome();
-  });
-
-  // بدءاً بـ pcMode
-  document.body.classList.add('pcMode');
-  btnPC.classList.add('activeDevice');
-
-  // ===== نظام التعليقات =====
-  const commentForm = document.getElementById('commentForm');
-  const commentName = document.getElementById('commentName');
-  const commentText = document.getElementById('commentText');
-  const commentsList = document.getElementById('commentsList');
-
-  // تحميل التعليقات من localStorage
-  function loadComments() {
-    const comments = JSON.parse(localStorage.getItem('comments')) || [];
-    commentsList.innerHTML = '';
-    comments.forEach((comment, index) => {
-      addCommentToDOM(comment.name, comment.text, index);
+    btnPC.addEventListener('click', () => {
+      if(!body.classList.contains('pcMode')) {
+        body.classList.add('pcMode');
+        body.classList.remove('phoneMode');
+        btnPC.classList.add('activeDevice');
+        btnPhone.classList.remove('activeDevice');
+        showHome();
+      }
     });
-  }
 
-  // إضافة تعليق للـ DOM
-  function addCommentToDOM(name, text, index) {
-    const commentDiv = document.createElement('div');
-    commentDiv.classList.add('commentItem');
+    btnPhone.addEventListener('click', () => {
+      if(!body.classList.contains('phoneMode')) {
+        body.classList.add('phoneMode');
+        body.classList.remove('pcMode');
+        btnPhone.classList.add('activeDevice');
+        btnPC.classList.remove('activeDevice');
+        showHome();
+      }
+    });
 
-    const header = document.createElement('div');
-    header.className = 'commentHeader';
+    // عرض الصفحة الرئيسية
+    function showHome() {
+      // إخفاء جميع الأقسام
+      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+      hero.style.display = 'flex';
+      setActiveLink(null);
+    }
 
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = name;
+    // عرض أقسام أخرى
+    function showSection(sectionId) {
+      hero.style.display = 'none';
+      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+      const section = document.getElementById(sectionId);
+      if(section) section.style.display = 'flex';
+      setActiveLink(sectionId);
+    }
 
-    const actionsDiv = document.createElement('div');
-    actionsDiv.className = 'commentActions';
+    // تحديد الرابط النشط في nav
+    function setActiveLink(activeId) {
+      // ازالة كل التفعيلات
+      document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+      if(activeId) {
+        const activeLink = document.getElementById('link-' + activeId);
+        if(activeLink) activeLink.classList.add('active');
+      }
+    }
 
-    // زر حذف
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.title = 'Delete comment';
-    deleteBtn.onclick = () => {
-      deleteComment(index);
-    };
+    // عنصر الهامبرغر و sideMenu
+    const hamburger = document.getElementById('hamburger');
+    const sideMenu = document.getElementById('sideMenu');
 
-    // زر تعديل
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
-    editBtn.title = 'Edit comment';
-    editBtn.onclick = () => {
-      editComment(index);
-    };
+    hamburger.addEventListener('click', toggleSideMenu);
 
-    actionsDiv.appendChild(editBtn);
-    actionsDiv.appendChild(deleteBtn);
+    function toggleSideMenu() {
+      if(sideMenu.classList.contains('open')) {
+        sideMenu.classList.remove('open');
+        sideMenu.setAttribute('aria-hidden', 'true');
+      } else {
+        sideMenu.classList.add('open');
+        sideMenu.setAttribute('aria-hidden', 'false');
+      }
+    }
 
-    header.appendChild(nameSpan);
-    header.appendChild(actionsDiv);
+    // إغلاق القائمة الجانبية عند اختيار رابط من القائمة
+    sideMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        sideMenu.classList.remove('open');
+        sideMenu.setAttribute('aria-hidden', 'true');
+      });
+    });
 
-    const textDiv = document.createElement('div');
-    textDiv.className = 'commentText';
-    textDiv.textContent = text;
+    // عند فتح الصفحة لأول مرة
+    window.addEventListener('load', () => {
+      // الافتراضي PC Mode
+      body.classList.add('pcMode');
+      btnPC.classList.add('activeDevice');
+      showHome();
+    });
 
-    commentDiv.appendChild(header);
-    commentDiv.appendChild(textDiv);
+    // --------- Comments System -----------
 
-    commentsList.appendChild(commentDiv);
-  }
+    const commentForm = document.getElementById('commentForm');
+    const commentsList = document.getElementById('commentsList');
 
-  // حذف تعليق
-  function deleteComment(index) {
-    let comments = JSON.parse(localStorage.getItem('comments')) || [];
-    comments.splice(index, 1);
-    localStorage.setItem('comments', JSON.stringify(comments));
-    loadComments();
-  }
+    // جلب التعليقات من localStorage وعرضها
+    function loadComments() {
+      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+      commentsList.innerHTML = '';
+      comments.forEach((comment, index) => {
+        const commentEl = document.createElement('div');
+        commentEl.classList.add('commentItem');
+        commentEl.innerHTML = `
+          <div class="commentHeader">
+            <span>${escapeHTML(comment.name)}</span>
+            <span>${new Date(comment.date).toLocaleString()}</span>
+          </div>
+          <div class="commentText">${escapeHTML(comment.text)}</div>
+          <div class="commentActions">
+            <button onclick="deleteComment(${index})" title="Delete">Delete</button>
+          </div>
+        `;
+        commentsList.appendChild(commentEl);
+      });
+    }
 
-  // تعديل تعليق
-  function editComment(index) {
-    let comments = JSON.parse(localStorage.getItem('comments')) || [];
-    const newText = prompt('Edit your comment:', comments[index].text);
-    if (newText !== null && newText.trim() !== '') {
-      comments[index].text = newText.trim();
+    // إضافة تعليق جديد
+    function addComment(event) {
+      event.preventDefault();
+      const name = commentForm.querySelector('#commenterName').value.trim();
+      const text = commentForm.querySelector('#commentText').value.trim();
+      if(!name || !text) return false;
+      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+      comments.push({
+        name,
+        text,
+        date: new Date().toISOString()
+      });
+      localStorage.setItem('comments', JSON.stringify(comments));
+      commentForm.reset();
+      loadComments();
+      return false;
+    }
+
+    // حذف تعليق
+    function deleteComment(index) {
+      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+      comments.splice(index, 1);
       localStorage.setItem('comments', JSON.stringify(comments));
       loadComments();
     }
-  }
 
-  // إضافة تعليق جديد
-  commentForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = commentName.value.trim();
-    const text = commentText.value.trim();
-    if (name === '' || text === '') {
-      alert('Please fill in both name and comment.');
-      return;
+    // تعقيم النص لمنع حقن HTML
+    function escapeHTML(text) {
+      return text.replace(/[&<>"']/g, function(m) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[m];
+      });
     }
-    let comments = JSON.parse(localStorage.getItem('comments')) || [];
-    comments.push({name, text});
-    localStorage.setItem('comments', JSON.stringify(comments));
-    loadComments();
-    commentForm.reset();
-  });
 
-  // تحميل التعليقات عند بداية التحميل
-  loadComments();
+    // تحميل التعليقات عند بدء الصفحة
+    window.onload = () => {
+      loadComments();
+    }
+  </script>
 
-  // عرض الصفحة الرئيسية عند التحميل
-  showHome();
-
-</script>
 </body>
 </html>
